@@ -34,11 +34,9 @@ const Register = () => {
 
         try{
             console.log(data);
-            const response = await register(data);       
-            if (response && response.data.token){
-                login();
-                localStorage.setItem("token", response.data.token);
-                console.log(" Valores dentro del registro: ",response?.data.token) 
+            const response = await register(data);    
+            if (response && response.data.token && response.data.usuarioId){
+                login(response.data.usuarioId, response.data.token);
                 navigate("/dashboard");
                
             }else{

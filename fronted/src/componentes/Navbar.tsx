@@ -1,15 +1,11 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthProvider';
 
 const Navbar = () => {
-    const navigate = useNavigate();
     const { logout, isAuthenticated } = useAuth();
 
     const handleLogout = () => {
         logout();
-        console.log("Token eliminado")
-        navigate("/");
     }
 
   return (

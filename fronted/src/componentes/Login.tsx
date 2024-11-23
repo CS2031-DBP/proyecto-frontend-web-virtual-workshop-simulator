@@ -26,12 +26,12 @@ const Login = () => {
         try{
             console.log(data);
             const response = await apiLogin(data.email, data.password);  
-            console.log("verificar varlo: ",response?.data.token)      
-            if (response && response.data.token){
-                console.log("Paso para dashboard", response.data.token)
-                login();
+            //console.log("verificar varlo: ",response?.data.token)      
+            if (response && response.data.token && response.data.usuarioId){
+                //console.log("Paso para dashboard", response.data.token)
+                login(response.data.usuarioId, response.data.token);
                 navigate("/dashboard");
-                localStorage.setItem("token", response.data.token)
+                //localStorage.setItem("token", response.data.token)
             }else{
                 navigate("/notFound")
                 

@@ -6,12 +6,14 @@ interface AuthProviderProps{
 
 interface AuthContextType {
     isAuthenticated: boolean;
-    login: () => void;
+    usuarioId: string | null;
+    login: (id: string, token: string) => void;
     logout: () => void;
   }
 
 const  AuthContext = createContext<AuthContextType>({
     isAuthenticated: false,
+    usuarioId: null,
     login: () => {},
     logout: () => {},
     }
@@ -19,23 +21,34 @@ const  AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({children}: AuthProviderProps){
     const[isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [usuarioId, setUsuarioId] = useState<string | null>(null);
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        setIsAuthenticated(!!token);
+      const token = localStorage.getItem("token");
+      const storedUsuarioId = localStorage.getItem("usuarioId");
+  
+      setIsAuthenticated(!!token);
+      setUsuarioId(storedUsuarioId);
     },[])
 
-  const login = () => {
-    setIsAuthenticated(true);
-  };
+    const login = (id: string, token: string) => {
+      //console.log("Autprovide");
+      localStorage.setItem("token", token);
+      //localStorage.setItem("usuarioId", id);
+      setIsAuthenticated(true);
+      setUsuarioId(id);
+    };
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    setIsAuthenticated(false);
-  };
+    const logout = () => {
+      localStorage.removeItem("token");
+      //localStorage.removeItem("usuarioId");
+      setIsAuthenticated(false);
+      setUsuarioId(null);
+      
+    };
 
 
-    return (<AuthContext.Provider value={{isAuthenticated, login, logout}}>
+    return (<AuthContext.Provider value={{ isAuthenticated, usuarioId, login, logout }}>
         {children}
         </AuthContext.Provider>
         );

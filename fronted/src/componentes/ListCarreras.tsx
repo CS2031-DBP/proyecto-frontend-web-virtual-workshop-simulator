@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCarreras } from "../api/carrera";
 
+
+
 export interface Carrera {
   id: number;
   nombre: string;
@@ -9,7 +11,7 @@ export interface Carrera {
 }
 
 interface ListCarrerasProps {
-  onCarreraClick: (id: number) => void; // Prop para manejar clics
+  onCarreraClick: (id: number) => void; 
 }
 
 
@@ -24,7 +26,7 @@ const ListCarreras: React.FC<ListCarrerasProps> = ({onCarreraClick }) => {
       setLoading(true);
       try {
         const data = await getCarreras();
-        setCarreras(data as Carrera[]); // Adaptado al formato devuelto por la API
+        setCarreras(data as Carrera[]); 
       } catch (error) {
         console.error("Error al obtener carreras:", error);
         setCarreras([]);

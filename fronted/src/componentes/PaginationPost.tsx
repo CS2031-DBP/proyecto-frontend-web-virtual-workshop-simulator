@@ -60,7 +60,7 @@ const PaginatioPost: React.FC = () => {
             >
             <div className="relative">
                 <img
-                    src={"bienvenida.png"}
+                    src={"/bienvenida.png"}
                     alt={post.titulo}
                     className="w-full h-48 object-cover rounded-t"
                 />
