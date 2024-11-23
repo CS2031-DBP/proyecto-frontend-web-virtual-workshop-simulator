@@ -6,7 +6,7 @@ interface AuthProviderProps{
 
 interface AuthContextType {
     isAuthenticated: boolean;
-    login: (token: string) => void;
+    login: () => void;
     logout: () => void;
   }
 
@@ -25,8 +25,7 @@ export function AuthProvider({children}: AuthProviderProps){
         setIsAuthenticated(!!token);
     },[])
 
-    const login = (token: string) => {
-    localStorage.setItem("token", token);
+  const login = () => {
     setIsAuthenticated(true);
   };
 

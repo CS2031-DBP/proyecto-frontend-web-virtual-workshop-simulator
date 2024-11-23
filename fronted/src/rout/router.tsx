@@ -6,6 +6,9 @@ import ProtectedRoute from "./ProtectedRoute";
 import Dashboard from "../page/Dashboard";
 import NotFound from "../page/NotFound";
 import App from "../App";
+import ListCarreras from "../componentes/ListCarreras";
+import ListCursos from "../componentes/ListCursos";
+import Carpeta from "../page/Carpeta";
 
 export const router = createBrowserRouter([
     {
@@ -31,7 +34,11 @@ export const router = createBrowserRouter([
       children: [
         {
           path: "/dashboard",
-          element: <Dashboard />
+          element: <Dashboard />,
+        },
+        {
+          path: "carrera/:carreraId", 
+          element: <Carpeta />
         }
       ]
     }

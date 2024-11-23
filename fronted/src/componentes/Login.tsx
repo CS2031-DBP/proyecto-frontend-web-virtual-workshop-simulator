@@ -25,12 +25,16 @@ const Login = () => {
 
         try{
             console.log(data);
-            const response = await apiLogin(data.email, data.password);        
-            if (response && response.token){
-                login(response.token);
-                navigate("/notFound")
-            }else{
+            const response = await apiLogin(data.email, data.password);  
+            console.log("verificar varlo: ",response?.data.token)      
+            if (response && response.data.token){
+                console.log("Paso para dashboard", response.data.token)
+                login();
                 navigate("/dashboard");
+                localStorage.setItem("token", response.data.token)
+            }else{
+                navigate("/notFound")
+                
             }
         }catch(error){
             console.error("Error en el inicio de sesión:", error);
