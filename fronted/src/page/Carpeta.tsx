@@ -11,7 +11,7 @@ const Carpeta: React.FC = () => {
   const { usuarioId } = useAuth(); // Obtener ID del usuario autenticado
   const [usuario, setUsuario] = useState<{ id: string; nombre: string; perfilUrl?: string } | null>(null);
   const navigate = useNavigate();
-
+ 
   useEffect(() => {
     const fetchUsuario = async () => {
       try {

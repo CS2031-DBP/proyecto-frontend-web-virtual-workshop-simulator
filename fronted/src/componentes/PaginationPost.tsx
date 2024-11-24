@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getPosts } from "../api/post";
 import { useAuth } from "../auth/AuthProvider";
 import { Usuario } from "./Perfil";
@@ -14,12 +14,13 @@ interface Post {
 }
 
 const PaginatioPost: React.FC = () => {
+  const { carreraId } = useParams<{ carreraId: string }>();
   const { usuarioId } = useAuth();
   const [usuario, setUsuario] = useState<Usuario | null>(null);
   const [posts, setposts] = useState<Post[]>([]);
-  const [page, setPage] = useState(0); // Página actual (inicia en 0)
-  const [totalPages, setTotalPages] = useState(0); // Total de páginas
-  const limit = 3; // Número de posts por página
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const limit = 3;
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -31,7 +32,7 @@ const PaginatioPost: React.FC = () => {
         setUsuario(response?.data);
 
         // Llama al backend con `page` y `limit`
-        const data = await getPosts(page, limit);
+        const data = await getPosts(page, limit, carreraId);
         setposts(data.content as Post[]);
         setTotalPages(data.totalPages); // Guarda el total de páginas
       } catch (error) {
@@ -68,7 +69,7 @@ const PaginatioPost: React.FC = () => {
             <div
               key={post.id}
               className="border rounded shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer p-4"
-              onClick={() => navigate(`/posts/${post.id}`)}
+              //onClick={() => navigate(`/posts/${post.id}`)}
             >
               <div className="flex items-center mb-4">
                 <img

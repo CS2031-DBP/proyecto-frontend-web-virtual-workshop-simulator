@@ -59,24 +59,29 @@ export const obtenerCarrerasInscritas = async (usuarioId: string | null) => {
 
 
 
-export const postPerfil = async (usuarioId: string,) => {
+export const postPerfil = async (usuarioId: string, file: File) => {
   try {
+    const formData = new FormData();
+    formData.append("file", file);
 
     const response = await axios.post(
-      `${API_URL}/usuarios//${usuarioId}/perfil`, 
+      `${API_URL}/usuarios/${usuarioId}/perfil`,
+      formData,
       {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       }
     );
 
-
-    console.log("se subio foto de perfil exitosamente");
+    console.log("Se subió la foto de perfil exitosamente");
     return response;
   } catch (error) {
-    console.error("Error al inscribirse a la carrera:", error);
+    console.error("Error al subir la foto de perfil:", error);
+    throw error;
   }
 };
-
 
 
 

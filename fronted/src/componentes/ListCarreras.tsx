@@ -12,12 +12,12 @@ export interface Carrera {
 }
 
 interface ListCarrerasProps {
+  usuarioId: string; 
   onCarreraClick: (id: string) => void; 
 }
 
 
-const ListCarreras: React.FC<ListCarrerasProps> = ({onCarreraClick }) => {
-  const { usuarioId } = useAuth();
+const ListCarreras: React.FC<ListCarrerasProps> = ({usuarioId,onCarreraClick }) => {
   const [carreras, setCarreras] = useState<Carrera[]>([]);
   const [loading, setLoading] = useState(false);
   const [mostrarFormulario, setMostrarFormulario] = useState<boolean>(false);
@@ -48,7 +48,7 @@ const ListCarreras: React.FC<ListCarrerasProps> = ({onCarreraClick }) => {
     };
 
     fetchCarreras();
-  }, []);
+  }, [usuarioId]);
 
   const refreshCursos = async () => {
     setMostrarFormulario(false);
