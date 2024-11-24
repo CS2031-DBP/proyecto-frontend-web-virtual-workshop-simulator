@@ -9,6 +9,8 @@ import App from "../App";
 import ListCarreras from "../componentes/ListCarreras";
 import ListCursos from "../componentes/ListCursos";
 import Carpeta from "../page/Carpeta";
+import CarpMat from "../page/CarpMat";
+import ActividadDetalle from "../componentes/ActividadDetalle";
 
 export const router = createBrowserRouter([
     {
@@ -39,6 +41,18 @@ export const router = createBrowserRouter([
         {
           path: "carrera/:carreraId", 
           element: <Carpeta />
+        },
+        {
+          path: "curso/:cursoId", 
+          element: <CarpMat />,
+        },
+        {
+          path: "actividades/:actividadId" ,
+          element: <ActividadDetalle />
+        },
+        {
+          path: "*",
+          element: <NotFound />
         }
       ]
     }

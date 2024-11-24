@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getPosts } from "../api/post";
+import { useAuth } from "../auth/AuthProvider";
+import { Usuario } from "./Perfil";
+import { getUsuario } from "../api/usuario";
 
 interface Post {
   id: string;
@@ -11,10 +14,12 @@ interface Post {
 }
 
 const PaginatioPost: React.FC = () => {
-
+  const { usuarioId } = useAuth();
+  const [usuario, setUsuario] = useState<Usuario | null>(null);
   const [posts, setposts] = useState<Post[]>([]);
-  const [skip, setSkip] = useState(0);
-  const limit = 4; 
+  const [page, setPage] = useState(0); // Página actual (inicia en 0)
+  const [totalPages, setTotalPages] = useState(0); // Total de páginas
+  const limit = 3; // Número de posts por página
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -22,71 +27,84 @@ const PaginatioPost: React.FC = () => {
     const fetchPost = async () => {
       setLoading(true);
       try {
-        const data = await getPosts(skip, limit);
+        const response = await getUsuario(usuarioId);
+        setUsuario(response?.data);
+
+        // Llama al backend con `page` y `limit`
+        const data = await getPosts(page, limit);
         setposts(data.content as Post[]);
+        setTotalPages(data.totalPages); // Guarda el total de páginas
       } catch (error) {
         console.error("Error al obtener productos:", error);
         setposts([]);
-      }finally {
+      } finally {
         setLoading(false);
       }
     };
 
     fetchPost();
-  }, [skip]);
+  }, [page]); // Cambia cuando la página actual cambia
 
   const handleNext = () => {
-    setSkip(skip + limit);
+    if (page < totalPages - 1) {
+      setPage(page + 1); // Avanza a la siguiente página
+    }
   };
 
   const handlePrevious = () => {
-    if (skip >= limit) {
-      setSkip(skip - limit);
+    if (page > 0) {
+      setPage(page - 1); // Retrocede a la página anterior
     }
   };
 
   return (
     <div className="max-w-4xl mx-auto mt-10">
-      <h2 className="text-2xl font-bold mb-4">Todos las Publicaciones</h2>
+      <h2 className="text-2xl font-bold mb-4">Todas las Publicaciones</h2>
       {loading ? (
         <p>Cargando posts...</p>
       ) : (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {posts.map((post) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {posts.map((post) => (
             <div
-            key={post.id}
-            className="border rounded shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer"
-            onClick={() => navigate(`/posts/${post.id}`)}
+              key={post.id}
+              className="border rounded shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer p-4"
+              onClick={() => navigate(`/posts/${post.id}`)}
             >
-            <div className="relative">
+              <div className="flex items-center mb-4">
                 <img
-                    src={"/bienvenida.png"}
-                    alt={post.titulo}
-                    className="w-full h-48 object-cover rounded-t"
+                  src={usuario?.perfilUrl || "/sinPerfil.png"}
+                  alt="Perfil"
+                  className="w-12 h-12 rounded-full mr-4 object-cover"
                 />
-                <div className="absolute top-2 right-2 bg-white text-gray-800 text-sm font-medium px-2 py-1 rounded">
+                <div>
+                  <p className="text-sm font-medium">{post.autorNombre}</p>
+                  <p className="text-gray-500 text-xs">
                     {new Date(post.fechaCreacion).toLocaleDateString()}
+                  </p>
                 </div>
+              </div>
+              <h3 className="text-lg font-bold text-center mb-4">
+                {post.titulo}
+              </h3>
+              <div className="border p-3 rounded bg-gray-50 text-gray-600 text-sm max-h-32 overflow-y-auto">
+                <p>{post.contenido}</p>
+              </div>
             </div>
-                <div className="p-4">
-                    <h3 className="text-lg font-bold mb-2">{post.titulo}</h3>
-                    <p className="text-gray-500 text-sm mb-2">Por {post.autorNombre}</p>
-                    <p className="text-gray-600 text-sm">{post.contenido.slice(0, 100)}...</p>
-                </div>
-            </div>
-            ))}
-        </div>)}
+          ))}
+        </div>
+      )}
       <div className="flex justify-between mt-4">
         <button
           onClick={handlePrevious}
           className="bg-blue-500 text-white p-2 rounded"
-          disabled={skip === 0}
+          disabled={page === 0}
         >
           Anterior
         </button>
         <button
           onClick={handleNext}
           className="bg-blue-500 text-white p-2 rounded"
+          disabled={page >= totalPages - 1}
         >
           Siguiente
         </button>

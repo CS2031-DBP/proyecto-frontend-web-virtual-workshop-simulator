@@ -5,11 +5,11 @@ import { API_URL } from "./inicio";
 
 export const getCursos = async (carreraId:string) => {
     try {
-      console.log("llamado a la api getCursos : ", carreraId )
+      //console.log("llamado a la api getCursos : ", carreraId )
       const response = await axios.get(`${API_URL}/cursos/carrera/${carreraId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
-      console.log('Cursos obtenidas', response);
+      console.log('Cursos obtenidas');
       return response;
     } catch (error) {
       console.error('Error al obtener carreras:', error);
@@ -27,7 +27,7 @@ export const createCurso = async (nombre:string, carreraId:string) => {
 
       const response = await axios.post<cursoResponse>(`${API_URL}/cursos/${carreraId}`,{nombre},{
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+        });
       console.log('Curso creado exitosamente respuesta Api');
       return response;
   }catch(error){

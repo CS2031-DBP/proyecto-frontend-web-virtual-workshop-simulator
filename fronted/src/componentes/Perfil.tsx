@@ -3,12 +3,12 @@ import { getUsuario } from '../api/usuario';
 import { useAuth } from '../auth/AuthProvider';
 
 interface Carrera {
-  id: number;
+  id: string;
   nombre: string;
 }
 
-interface Usuario {
-  id: number;
+export interface Usuario {
+  id: string;
   nombre: string;
   email: string;
   perfilUrl: string;

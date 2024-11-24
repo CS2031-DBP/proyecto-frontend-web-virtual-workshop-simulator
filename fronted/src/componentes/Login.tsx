@@ -10,9 +10,11 @@ const Login = () => {
         {
             email:"",
             password:"",
-        })
+        });
 
-    const handleChange = (e) => {
+        const [errorMessage, setErrorMessage] = useState(""); 
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setData({
             ...data,
@@ -20,25 +22,24 @@ const Login = () => {
         });
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setErrorMessage(""); 
 
-        try{
-            console.log(data);
+        try {
             const response = await apiLogin(data.email, data.password);  
-            //console.log("verificar varlo: ",response?.data.token)      
-            if (response && response.data.token && response.data.usuarioId){
-                //console.log("Paso para dashboard", response.data.token)
-                login(response.data.usuarioId, response.data.token);
-                navigate("/dashboard");
-                //localStorage.setItem("token", response.data.token)
-            }else{
-                navigate("/notFound")
-                
+            if (response && response.data.token && response.data.usuarioId) {
+              // Si las credenciales son correctas
+              login(response.data.usuarioId, response.data.token);
+              navigate("/dashboard");
+            } else {
+              // Si la respuesta del API no contiene un token o usuarioId
+              setErrorMessage("Los datos son incorrectas. Por favor, intenta nuevamente o registrate.");
             }
-        }catch(error){
+          } catch (error) {
             console.error("Error en el inicio de sesión:", error);
-        }
+            setErrorMessage("Ocurrió un error al intentar iniciar sesión. Por favor, intenta nuevamente.");
+          }
         
         
     }
@@ -52,6 +53,12 @@ const Login = () => {
                 <h2 className="text-2xl font-bold mb-4 text-blue-950 text-center">
                     BIENVENIDO
                 </h2>
+                 {/* Mostrar el mensaje de error si existe */}
+                {errorMessage && (
+                    <div className="text-red-500 text-sm mb-4">
+                        <p>{errorMessage}</p>
+                    </div>
+                )}
                 <div className="mb-4">
                     <label
                         htmlFor="email"

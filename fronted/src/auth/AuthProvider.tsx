@@ -32,7 +32,7 @@ export function AuthProvider({children}: AuthProviderProps){
     },[])
 
     const login = (id: string, token: string) => {
-      //console.log("Autprovide");
+      //console.log("Autprovide", token, id);
       localStorage.setItem("token", token);
       //localStorage.setItem("usuarioId", id);
       setIsAuthenticated(true);
