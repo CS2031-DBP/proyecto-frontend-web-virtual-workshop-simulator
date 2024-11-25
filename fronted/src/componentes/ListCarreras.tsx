@@ -41,7 +41,6 @@ const ListCarreras: React.FC<ListCarrerasProps> = ({usuarioId,onCarreraClick }) 
 
       } catch (error) {
         console.error("Error al obtener carreras:", error);
-        setCarreras([]);
       } finally {
         setLoading(false);
       }

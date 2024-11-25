@@ -3,7 +3,11 @@ import { useAuth } from "../auth/AuthProvider";
 import { useParams } from "react-router-dom";
 import { MaterialRequestDto, subirMaterial } from "../api/material";
 
-const SubirMaterial: React.FC = () => {
+interface SubirMaterialProps {
+  onMaterialSubido: () => void; 
+}
+
+const SubirMaterial: React.FC<SubirMaterialProps> = ({ onMaterialSubido }) => {
   const { usuarioId } = useAuth();
   const { cursoId } = useParams<{ cursoId: string }>();
 
@@ -37,9 +41,10 @@ const SubirMaterial: React.FC = () => {
       setSuccessMessage(`Material "${response.nombre}" subido exitosamente.`);
       setNombre("");
       setFile(null);
+      onMaterialSubido();
     } catch (error) {
       setError("Hubo un error al subir el material. Por favor, intenta nuevamente.");
-    } finally {
+    } finally { 
       setLoading(false);
     }
   };

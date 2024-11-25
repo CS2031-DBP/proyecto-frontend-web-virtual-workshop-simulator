@@ -11,6 +11,8 @@ import ListCursos from "../componentes/ListCursos";
 import Carpeta from "../page/Carpeta";
 import CarpMat from "../page/CarpMat";
 import ActividadDetalle from "../componentes/ActividadDetalle";
+import SubirMaterial from "../componentes/SubirMateriales";
+import SubirMaterialPage from "../page/PageSubirMaterial";
 
 export const router = createBrowserRouter([
     {
@@ -53,6 +55,10 @@ export const router = createBrowserRouter([
         {
           path: "*",
           element: <NotFound />
+        },
+        {
+          path: "/curso/material/subir",
+          element: <SubirMaterialPage />,
         }
       ]
     }
