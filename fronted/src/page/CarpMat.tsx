@@ -1,21 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Navbar from "../componentes/Navbar";
 import ListActividades from "../componentes/ListActividades";
 import PaginatioMaterial from "../componentes/PaginatioMaterial";
+import { useAuth } from "../auth/AuthProvider";
+import { obtenerCarrerasInscritas } from "../api/usuario";
 
 const CarpMat: React.FC = () => {
   const navigate = useNavigate();
-  const { state } = useLocation(); 
-  const inscrito = state?.inscrito; 
   const { cursoId } = useParams<{ cursoId: string }>();
+  const { usuarioId, inscrito, setInscrito } = useAuth();
+
+  useEffect(() => {
+    const verificarInscripcion = async () => {
+      try {
+        const carrerasInscritas = await obtenerCarrerasInscritas(usuarioId);
+        setInscrito(carrerasInscritas.includes(Number(cursoId)));
+      } catch (error) {
+        console.error("Error al verificar inscripción:", error);
+      }
+    };
+
+    verificarInscripcion();
+  }, [usuarioId, cursoId, setInscrito]);
 
   const handleNavigateToSubirMaterial = () => {
-    navigate("/curso/material/subir", { state: { cursoId } } );
+    navigate("/curso/material/subir", { state: { cursoId } , replace: true} );
   };
 
   const handleNavigateToCrearActividad = () => {
-    navigate("/curso/actividad/crear", { state: { cursoId } });
+    navigate("/curso/actividad/crear", { state: { cursoId} , replace: true });
   };
 
   return (

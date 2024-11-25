@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { getMateriales } from "../api/material";
+import { useAuth } from "../auth/AuthProvider"; 
+import { calificarMaterial, getMateriales } from "../api/material";
+
 
 export enum TipoMaterial {
   PDF = "PDF",
@@ -18,16 +19,16 @@ interface Material {
 }
 
 const PaginatioMaterial = () => {
-  const [materials, setmaterial] = useState<Material[]>([]);
+  const [materials, setMaterials] = useState<Material[]>([]);
   const [skip, setSkip] = useState(0);
   const limit = 4;
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const { usuarioId } = useAuth(); // Obtener el usuario actual
 
   const getImageForType = (tipo: TipoMaterial): string => {
     switch (tipo) {
       case TipoMaterial.PDF:
-        return "/pdf.png"; // Asegúrate de que esta imagen esté en la carpeta `public`
+        return "/pdf.png";
       case TipoMaterial.VIDEO:
         return "/video.png";
       case TipoMaterial.IMAGEN:
@@ -37,22 +38,37 @@ const PaginatioMaterial = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      setLoading(true);
-      try {
-        const data = await getMateriales(skip, limit);
-        setmaterial(data.content as Material[]);
-      } catch (error) {
-        console.error("Error al obtener productos:", error);
-        setmaterial([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchMaterials = async () => {
+    setLoading(true);
+    try {
+      const data = await getMateriales(skip, limit);
+      setMaterials(data.content as Material[]);
+    } catch (error) {
+      console.error("Error al obtener materiales:", error);
+      setMaterials([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchPost();
+  useEffect(() => {
+    fetchMaterials();
   }, [skip]);
+
+  const handleRating = async (materialId: string, valor: number) => {
+    try {
+      const updatedMaterial = await calificarMaterial(usuarioId, materialId, valor);
+
+      // Actualizar el estado local con la nueva calificación
+      setMaterials((prevMaterials) =>
+        prevMaterials.map((material) =>
+          material.id === materialId ? { ...material, rating: updatedMaterial.rating } : material
+        )
+      );
+    } catch (error) {
+      console.error("Error al calificar el material:", error);
+    }
+  };
 
   const handleNext = () => {
     setSkip(skip + limit);
@@ -78,8 +94,7 @@ const PaginatioMaterial = () => {
           {materials.map((material) => (
             <div
               key={material.id}
-              className="border rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 cursor-pointer bg-white overflow-hidden"
-              onClick={() => window.open(material.urlArchivo, "_blank")}
+              className="border rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 bg-white overflow-hidden"
             >
               {/* Imagen del material */}
               <div className="relative bg-gray-100 h-40 flex items-center justify-center">
@@ -93,7 +108,6 @@ const PaginatioMaterial = () => {
                 </div>
               </div>
 
-              {/* Contenedor de los detalles */}
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-gray-800 mb-2 truncate">
                   {material.nombre}
@@ -104,15 +118,26 @@ const PaginatioMaterial = () => {
                 <p className="text-sm text-gray-600 mb-1 truncate">
                   Por: <span className="font-medium">{material.usuarioNombre || "Anónimo"}</span>
                 </p>
-                <button className="mt-2 text-blue-500 text-sm font-medium underline">
-                  Ver más
-                </button>
+
+                <div className="flex items-center justify-between mt-4">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      onClick={() => handleRating(material.id, star)}
+                      className={`text-lg ${
+                        material.rating >= star ? "text-yellow-500" : "text-gray-400"
+                      }`}
+                    >
+                      ★
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           ))}
         </div>
       )}
-      {/* Controles de paginación */}
+      
       <div className="flex justify-between mt-6">
         <button
           onClick={handlePrevious}

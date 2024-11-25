@@ -9,6 +9,8 @@ interface AuthContextType {
     usuarioId: string | null;
     login: (id: string, token: string) => void;
     logout: () => void;
+    inscrito: boolean;
+    setInscrito: (value: boolean) => void;
   }
 
 const  AuthContext = createContext<AuthContextType>({
@@ -16,12 +18,15 @@ const  AuthContext = createContext<AuthContextType>({
     usuarioId: null,
     login: () => {},
     logout: () => {},
+    inscrito: false,
+    setInscrito: () => {},
     }
 )
 
 export function AuthProvider({children}: AuthProviderProps){
     const[isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [usuarioId, setUsuarioId] = useState<string | null>(null);
+    const [inscrito, setInscrito] = useState<boolean>(false);
 
     useEffect(() => {
       const token = localStorage.getItem("token");
@@ -48,7 +53,7 @@ export function AuthProvider({children}: AuthProviderProps){
     };
 
 
-    return (<AuthContext.Provider value={{ isAuthenticated, usuarioId, login, logout }}>
+    return (<AuthContext.Provider value={{ isAuthenticated, usuarioId, login, logout, inscrito, setInscrito }}>
         {children}
         </AuthContext.Provider>
         );

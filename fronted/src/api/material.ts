@@ -48,3 +48,20 @@ export const subirMaterial = async (materialRequestDto: MaterialRequestDto, file
     }
 };
 
+
+export const calificarMaterial = async (usuarioId: string, materialId: string, valor: number) => {
+  try {
+    const response = await axios.post(`${API_URL}/calificaciones`, {
+      usuarioId,
+      materialId,
+      valor,
+    },
+    {headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }}
+  );
+    return response.data;
+  } catch (error) {
+    console.error("Error al calificar el material:", error);
+    throw error;
+  }
+};
+
