@@ -12,6 +12,7 @@ export interface Actividad {
 }
 
 const ListActividades: React.FC= () => {
+  document.title = 'Actividades - Asesorias++';
 
   const { cursoId } = useParams<{ cursoId: string }>();
   const { usuarioId } = useAuth();

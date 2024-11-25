@@ -17,7 +17,7 @@ interface ListCursoProps {
 }
 
 const ListCursos: React.FC<ListCursoProps> = ({onCursoClick}) => {
-
+  document.title = 'Cursos - Asesorias++';
   const { carreraId } = useParams<{ carreraId: string }>();
   const { usuarioId } = useAuth();
   const [cursos, setCursos] = useState<Curso[]>([]); 

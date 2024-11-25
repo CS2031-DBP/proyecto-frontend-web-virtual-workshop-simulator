@@ -4,6 +4,7 @@ import Navbar from '../componentes/Navbar';
 
 const Inicio = () => {
     const navigate = useNavigate();
+    document.title = 'Iniciar Sesion - Asesorias++';
 
     const handleMove = (path) => {
         navigate(path);

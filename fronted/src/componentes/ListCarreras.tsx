@@ -18,6 +18,7 @@ interface ListCarrerasProps {
 
 
 const ListCarreras: React.FC<ListCarrerasProps> = ({usuarioId,onCarreraClick }) => {
+  
   const [carreras, setCarreras] = useState<Carrera[]>([]);
   const [loading, setLoading] = useState(false);
   const [mostrarFormulario, setMostrarFormulario] = useState<boolean>(false);

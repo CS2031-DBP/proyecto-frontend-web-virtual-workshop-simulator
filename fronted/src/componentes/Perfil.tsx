@@ -17,6 +17,7 @@ export interface Usuario {
 }
 
 const Perfil: React.FC = () => {
+  document.title = 'perfil de usuario - Asesorias++';
   const { usuarioId } = useAuth();
   const [usuario, setUsuario] = useState<Usuario | null>(null);
   const [error, setError] = useState<string | null>(null);

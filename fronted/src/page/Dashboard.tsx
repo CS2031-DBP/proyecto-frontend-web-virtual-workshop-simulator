@@ -6,6 +6,7 @@ import Navbar from "../componentes/Navbar";
 import { useAuth } from "../auth/AuthProvider";
 
 const Dashboard: React.FC = () => {
+  document.title = 'Menu - Asesorias++';
   const { usuarioId } = useAuth();
   const navigate = useNavigate();
 

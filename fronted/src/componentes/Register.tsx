@@ -10,6 +10,7 @@ interface User {
 }
 
 const Register = () => {
+  document.title = 'Registro - Asesorias++';
   const navigate = useNavigate();
   const { login } = useAuth();
   const [data, setData] = useState<User>({
