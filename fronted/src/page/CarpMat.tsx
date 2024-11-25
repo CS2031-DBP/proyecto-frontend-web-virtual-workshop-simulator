@@ -5,6 +5,8 @@ import Perfil from "../componentes/Perfil";
 import Navbar from "../componentes/Navbar";
 import ListActividades from "../componentes/ListActividades";
 import PaginatioMaterial from "../componentes/PaginatioMaterial";
+import CrearActividad from "../componentes/CrearActividad";
+import SubirMaterial from "../componentes/SubirMateriales";
 
 const CarpMat: React.FC = () => {
   const navigate = useNavigate();
@@ -24,7 +26,7 @@ const CarpMat: React.FC = () => {
 
         {/* Panel Derecho */}
         <main className="flex-1 p-6 bg-gray-50 overflow-y-auto">
-          <PaginatioMaterial /> {/* Aquí se renderearán los detalles de perfil o cursos */}
+          <SubirMaterial /> {/* Aquí se renderearán los detalles de perfil o cursos */}
         </main>
       </div>
     </div>

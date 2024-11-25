@@ -60,7 +60,7 @@ const PaginatioPost: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto mt-10">
-      <h2 className="text-2xl font-bold mb-4">Todas las Publicaciones</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Todas las Publicaciones</h2>
       {loading ? (
         <p>Cargando posts...</p>
       ) : (

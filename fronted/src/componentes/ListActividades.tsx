@@ -3,7 +3,7 @@ import { MdTask } from "react-icons/md";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
-import { gettActividades } from "../api/actividades";
+import { getActividad } from "../api/actividades";
 
 export interface Actividad {
   id: string;
@@ -11,11 +11,7 @@ export interface Actividad {
   enlace:string
 }
 
-interface ListCursoProps {
-  onCursoClick: (id: string) => void; 
-}
-
-const ListActividades: React.FC<ListCursoProps> = ({onCursoClick}) => {
+const ListActividades: React.FC= () => {
 
   const { cursoId } = useParams<{ cursoId: string }>();
   const { usuarioId } = useAuth();
@@ -35,7 +31,7 @@ const ListActividades: React.FC<ListCursoProps> = ({onCursoClick}) => {
       setError(null); 
       
       try {
-        const response = await gettActividades(cursoId);
+        const response = await getActividad(cursoId);
         if (response && response.data) {
           setActividad(response.data as Actividad[]); 
         }

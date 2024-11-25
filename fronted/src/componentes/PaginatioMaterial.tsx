@@ -70,7 +70,7 @@ const PaginatioMaterial = () => {
 
       return (
         <div className="max-w-4xl mx-auto mt-10">
-          <h2 className="text-2xl font-bold mb-4">Todos las Publicaciones</h2>
+          <h2 className="text-2xl font-bold mb-4">Todos los Materiales Disponibles</h2>
           {loading ? (
         <p>Cargando materiales...</p>
       ) : materials.length === 0 ? (

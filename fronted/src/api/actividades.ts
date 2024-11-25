@@ -15,19 +15,22 @@ export const postActividades = async (usuarioId:string, cursoId:string) => {
 
 };
 
-export const getActividadById = async (id: string) => {
-  try{
-    const response = await axios.get(`/api/actividades/${id}`);
+export const getActividadById = async (usuarioId: string, id: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/actividades/${usuarioId}/${id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
     return response.data;
-  }catch(error){
-    console.log(error);
+  } catch (error) {
+    console.error("Error al obtener la actividad por ID:", error);
   }
 };
 
-export const gettActividad = async () => {
+
+export const getActividad = async (cursoId:string) => {
     try {
       //console.log("llamado a la api getActividades : " )
-      const response = await axios.get(`${API_URL}/actividades`, {
+      const response = await axios.get(`${API_URL}/actividades/curso/${cursoId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       console.log('Actividades obtenidas');
@@ -39,18 +42,27 @@ export const gettActividad = async () => {
 };
 
 
-export const gettActividades = async (cursoId: string) => {
-  // Simular una respuesta de la API
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        data: [
-          { id: "1", nombre: "Actividad 1", enlace: "https://google.com" },
-          { id: "2", nombre: "Actividad 2", enlace: "https://example.com" },
-          { id: "3", nombre: "Actividad 3", enlace: "" }, // Actividad sin enlace
-        ],
-      });
-    }, 1000); // Simular un retraso de 1 segundo
-  });
+export interface ActividadRequest {
+  nombre: string;
+  tipo: "REUNION" | "QUIZZ";
+  fechaActividad: string;
+  hora: string;
+}
+
+export const createActividad = async (usuarioId: string, cursoId: string, actividadData: ActividadRequest ) => {
+  try {
+    console.log(usuarioId, cursoId, actividadData, "API/////////")
+    console.log(localStorage.getItem("token"))
+    const response = await axios.post(`${API_URL}/actividades/${usuarioId}/curso/${cursoId}`,
+      actividadData,
+      { headers: {Authorization: `Bearer ${localStorage.getItem("token")}` }, }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error al crear la actividad:", error);
+    throw new Error("No se pudo crear la actividad");
+  }
 };
+
 
