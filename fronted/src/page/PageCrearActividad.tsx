@@ -1,17 +1,12 @@
 import React from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../componentes/Navbar";
-import SubirMaterial from "../componentes/SubirMateriales";
+import CrearActividad from "../componentes/CrearActividad";
 
-const SubirMaterialPage: React.FC = () => {
+const CrearActividadPage: React.FC = () => {
+  const { state } = useLocation();
   const navigate = useNavigate();
-  const { state } = useLocation(); 
   const cursoId = state?.cursoId;
-
-
-  const handleMaterialSubido = () => {
-    navigate(-1); 
-  };
 
   if (!cursoId) {
     return <p>Error: No se especificó el curso.</p>;
@@ -19,18 +14,15 @@ const SubirMaterialPage: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      {/* Navbar */}
       <Navbar />
 
-      {/* Contenido Principal */}
       <div className="flex flex-1 mt-[70px] justify-center items-center bg-gray-50">
         <div className="w-full max-w-2xl p-4 bg-white shadow-md rounded">
-          {/* Pasa cursoId como prop */}
-          <SubirMaterial cursoId={cursoId} onMaterialSubido={handleMaterialSubido} />
+          <CrearActividad cursoId={cursoId} />
         </div>
       </div>
     </div>
   );
 };
 
-export default SubirMaterialPage;
+export default CrearActividadPage;

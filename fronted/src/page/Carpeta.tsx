@@ -43,22 +43,20 @@ const Carpeta: React.FC = () => {
     <div className="flex flex-col h-screen">
       <Navbar />
       <div className="flex flex-1 mt-[70px]">
-        {/* Panel Izquierdo */}
+
         <aside className="w-1/4 border-r p-4 bg-gray-100 overflow-y-auto">
           <h2 className="text-xl font-bold mb-4">Cursos</h2>
-          <ListCursos onCursoClick={(id) => navigate(`/curso/${id}`)} />
+          <ListCursos onCursoClick={(id) => navigate(`/curso/${id}`, { state: { inscrito } })} />
         </aside>
 
-        {/* Panel Derecho */}
         <main className="flex-1 p-6 bg-gray-50 overflow-y-auto flex flex-col gap-6">
-          {/* Sección Crear Post - Solo si está inscrito */}
+        
           {usuario && inscrito && (
             <div className="bg-white p-4 rounded-lg shadow-lg w-full max-w-md mx-auto">
               <CrearPost usuario={usuario} />
             </div>
           )}
 
-          {/* Paginación y Lista de Posts */}
           <div className="flex-1">
             <PaginatioPost />
           </div>

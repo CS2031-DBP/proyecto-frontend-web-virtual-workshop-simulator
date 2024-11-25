@@ -3,11 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ActividadRequest, createActividad } from "../api/actividades";
 import { useAuth } from "../auth/AuthProvider";
 
-
-const CrearActividad: React.FC = () => {
+interface CrearActividadProps {
+  cursoId: string;
+}
+const CrearActividad: React.FC<CrearActividadProps> = ({ cursoId }) => {
   const { usuarioId } = useAuth();
   const navigate = useNavigate();
-  const { cursoId } = useParams<{ cursoId: string }>();
 
   const [actividad, setActividad] = useState<ActividadRequest>({
     nombre: "",
