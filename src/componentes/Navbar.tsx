@@ -13,7 +13,7 @@ const Navbar = () => {
         <div className="container mx-auto flex justify-between items-center p-4">
             <h2 className="flex items-center">
                 <img
-                    src="logo_buho.png"
+                    src="/logo_buho.png"
                     alt=""
                     className="h-[50px] w-[50px] mr-2" />
                 <span className="text-lg font-bold text-white">Asesorias ++</span>

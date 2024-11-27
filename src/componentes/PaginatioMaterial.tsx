@@ -3,6 +3,7 @@ import { useAuth } from "../auth/AuthProvider";
 import { calificarMaterial, getMateriales } from "../api/material";
 
 
+
 export enum TipoMaterial {
   PDF = "PDF",
   VIDEO = "VIDEO",
@@ -19,6 +20,7 @@ interface Material {
 }
 
 const PaginatioMaterial = () => {
+  
   const [materials, setMaterials] = useState<Material[]>([]);
   const [skip, setSkip] = useState(0);
   const limit = 4;
@@ -80,6 +82,11 @@ const PaginatioMaterial = () => {
     }
   };
 
+  const handleMaterial = (temp: string) => {
+    window.open(temp, '_blank');
+  };
+  
+
   return (
     <div className="max-w-6xl mx-auto mt-10 p-4">
       <h2 className="text-2xl font-bold mb-6 text-center">
@@ -132,6 +139,14 @@ const PaginatioMaterial = () => {
                     </button>
                   ))}
                 </div>
+                <button
+                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                      title="abrir material"
+                      onClick={() => handleMaterial(material.urlArchivo)}
+                      
+                    >
+                      Cick aqui para abrir Material
+                    </button>
               </div>
             </div>
           ))}
