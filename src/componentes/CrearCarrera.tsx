@@ -38,14 +38,14 @@ const CrearCarrera: React.FC<CrearCarreraFormProps> = ({onCarreraCreado })=> {
 
   return (
     <div className="mb-4">
-      <h3 className="text-xl font-semibold mb-2">Crear Nuevo Curso</h3>
+      <h3 className="text-xl font-semibold mb-2">Crear Nuevo Carrera</h3>
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           value={nombreCurso}
           onChange={(e) => setNombreCurso(e.target.value)}
-          placeholder="Nombre del curso"
+          placeholder="Nombre de la Carrera"
           className="border rounded px-4 py-2 mb-2 w-full"
         />
         <button
@@ -53,7 +53,7 @@ const CrearCarrera: React.FC<CrearCarreraFormProps> = ({onCarreraCreado })=> {
           disabled={creandoCarrera}
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
         >
-          {creandoCarrera ? "Creando..." : "Crear Curso"}
+          {creandoCarrera ? "Creando..." : "Crear Carrera"}
         </button>
       </form>
     </div>
