@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export const API_URL = 'http://44.204.28.207:8080';
+export const API_URL = 'http://44.212.37.186:8080';
 
 interface User {
     nombre: string;
